@@ -1,0 +1,28 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"  # ইমেজ সেভ হবে এই ফোল্ডারে
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "Products"
+    folder: "data/products"
+    create: true
+    slug: "{{fields.name}}"
+    fields:
+      - { name: "id", label: "ID", widget: "number" }
+      - { name: "name", label: "Product Name", widget: "string" }
+      - { name: "price", label: "Price", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "image", label: "Product Image", widget: "image" }
+      - name: "links"
+        label: "Affiliate Links"
+        widget: "object"
+        fields:
+          - { name: "buy_now", label: "Buy Now Link", widget: "string" }
+          - { name: "amazon", label: "Amazon Link", widget: "string" }
+          - { name: "aliexpress", label: "AliExpress Link", widget: "string" }
+          - { name: "ebay", label: "eBay Link", widget: "string" }
+          - { name: "etsy", label: "Etsy Link", widget: "string" }
