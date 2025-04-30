@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .product-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .product-title {
+            color: #333;
+            font-size: 24px;
+        }
+        .product-price {
+            color: #e63946;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .buy-now-btn {
+            background: #6e48aa;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .share-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .share-btn {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .affiliate-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .affiliate-link {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-container" id="product-detail">
+        <!-- প্রোডাক্ট ডিটেইলস এখানে লোড হবে -->
+    </div>
+
+    <script>
+        // URL থেকে প্রোডাক্ট আইডি পড়া
+        const productId = new URLSearchParams(window.location.search).get('id');
+        
+        // নমুনা ডাটা (পরবর্তীতে JSON থেকে লোড করব)
+        const sampleProducts = [
+            {
+                id: 1,
+                name: "Premium Baby Diapers",
+                price: "৳650",
+                description: "উচ্চমানের সুতির বেবি ডায়াপার, ১০০% লিকপ্রুফ। নরম ও ত্বকবান্ধব উপাদানে তৈরি।",
+                image: "https://via.placeholder.com/800x400?text=Premium+Baby+Diapers",
+                links: {
+                    buy_now: "#",
+                    amazon: "#",
+                    aliexpress: "#",
+                    ebay: "#",
+                    etsy: "#"
+                }
+            },
+            {
+                id: 2,
+                name: "Women's Summer Dress",
+                price: "৳1,299",
+                description: "স্ট্রাইপড ডিজাইনের আরামদায়ক কটন ড্রেস, গ্রীষ্মকালীন ব্যবহারের জন্য উপযোগী।",
+                image: "https://via.placeholder.com/800x400?text=Women's+Summer+Dress",
+                links: {
+                    buy_now: "#",
+                    amazon: "#",
+                    aliexpress: "#",
+                    ebay: "#",
+                    etsy: "#"
+                }
+            }
+        ];
+
+        // প্রোডাক্ট ডিটেইলস লোড করার ফাংশন
+        function loadProductDetails() {
+            const product = sampleProducts.find(p => p.id == productId);
+            const container = document.getElementById('product-detail');
+            
+            if (product) {
+                // শেয়ার লিংক জেনারেট করা
+                const shareLink = `${window.location.origin}${window.location.pathname}?id=${product.id}`;
+                
+                container.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <h1 class="product-title">${product.name}</h1>
+                    <div class="product-price">${product.price}</div>
+                    <p>${product.description}</p>
+                    
+                    <button class="buy-now-btn" onclick="window.open('${product.links.buy_now}', '_blank')">
+                        BUY NOW
+                    </button>
+                    
+                    <div class="share-section">
+                        <h3>Share This Product:</h3>
+                        <input type="text" id="share-link" value="${shareLink}" style="width:100%; padding:8px; margin-bottom:10px;" readonly>
+                        <button class="share-btn" onclick="copyShareLink()">
+                            <i class="fas fa-copy"></i> Copy Link
+                        </button>
+                        <button class="share-btn" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                        <button class="share-btn" onclick="shareOnWhatsApp()">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                    </div>
+                    
+                    <div class="affiliate-links">
+                        <a href="${product.links.amazon}" target="_blank" class="affiliate-link">
+                            <i class="fab fa-amazon"></i><br>Amazon
+                        </a>
+                        <a href="${product.links.aliexpress}" target="_blank" class="affiliate-link">
+                            <i class="fab fa-alipay"></i><br>AliExpress
+                        </a>
+                        <a href="${product.links.ebay}" target="_blank" class="affiliate-link">
+                            <i class="fab fa-ebay"></i><br>eBay
+                        </a>
+                        <a href="${product.links.etsy}" target="_blank" class="affiliate-link">
+                            <i class="fab fa-etsy"></i><br>Etsy
+                        </a>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = '<h2>Product not found</h2>';
+            }
+        }
+
+        // শেয়ার ফাংশনগুলো
+        function copyShareLink() {
+            const linkInput = document.getElementById('share-link');
+            linkInput.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+
+        function shareOnFacebook() {
+            const link = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${link}`, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            const text = encodeURIComponent("Check out this product: " + window.location.href);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        // পেজ লোড হলে ডিটেইলস শো করা
+        window.onload = loadProductDetails;
+    </script>
+</body>
+</html>

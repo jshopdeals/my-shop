@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .buy-now {
+            background: #6e48aa;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .affiliate-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .affiliate-links a {
+            color: #555;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="category-title">Products</h1>
+    </div>
+
+    <div class="products" id="product-container">
+        <!-- প্রোডাক্টগুলো এখানে লোড হবে -->
+    </div>
+
+    <script>
+        // URL থেকে ক্যাটাগরি পড়া
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category') || 'baby';
+        
+        // ক্যাটাগরি টাইটেল সেট করা
+        const categoryTitles = {
+            'baby': 'Baby Essentials',
+            'women': 'Women\'s Fashion',
+            'beauty': 'Beauty Products',
+            'home': 'Home Decor',
+            'electronics': 'Electronics'
+        };
+        document.getElementById('category-title').textContent = categoryTitles[category] || 'Products';
+        
+        // নমুনা প্রোডাক্ট ডাটা (পরবর্তীতে JSON ফাইল থেকে লোড করব)
+        const sampleProducts = {
+            'baby': [
+                {
+                    id: 1,
+                    name: 'Premium Baby Diapers',
+                    price: '৳650',
+                    image: 'https://via.placeholder.com/300x200?text=Baby+Diapers',
+                    links: {
+                        buy_now: '#',
+                        amazon: '#',
+                        aliexpress: '#',
+                        ebay: '#',
+                        etsy: '#'
+                    }
+                }
+            ],
+            'women': [
+                {
+                    id: 2,
+                    name: 'Women\'s Summer Dress',
+                    price: '৳1,299',
+                    image: 'https://via.placeholder.com/300x200?text=Women+Dress',
+                    links: {
+                        buy_now: '#',
+                        amazon: '#',
+                        aliexpress: '#',
+                        ebay: '#',
+                        etsy: '#'
+                    }
+                }
+            ]
+        };
+
+        // প্রোডাক্ট ডিসপ্লে ফাংশন
+        function displayProducts() {
+            const container = document.getElementById('product-container');
+            const products = sampleProducts[category] || [];
+            
+            products.forEach(product => {
+                container.innerHTML += `
+                    <div class="product-card" onclick="window.location='product-detail.html?id=${product.id}'">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>Price: ${product.price}</p>
+                            <button class="buy-now" onclick="event.stopPropagation(); window.open('${product.links.buy_now}', '_blank')">
+                                Buy Now
+                            </button>
+                            <div class="affiliate-links">
+                                <a href="${product.links.amazon}" target="_blank"><i class="fab fa-amazon"></i></a>
+                                <a href="${product.links.aliexpress}" target="_blank"><i class="fab fa-alipay"></i></a>
+                                <a href="${product.links.ebay}" target="_blank"><i class="fab fa-ebay"></i></a>
+                                <a href="${product.links.etsy}" target="_blank"><i class="fab fa-etsy"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // পেজ লোড হলে প্রোডাক্ট ডিসপ্লে
+        window.onload = displayProducts;
+    </script>
+</body>
+</html>
